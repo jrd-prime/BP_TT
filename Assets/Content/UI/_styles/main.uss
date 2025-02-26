@@ -1,0 +1,110 @@
+.top-btn {
+    width: 64px;
+    height: 64px;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    background-color: rgb(133, 161, 63);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    align-content: center;
+    background-image: none;
+    color: rgb(0, 0, 0);
+    -unity-text-align: middle-center;
+    -unity-font-style: normal;
+    font-size: 8px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.first-btn {
+    margin-top: 0;
+    margin-right: auto;
+    margin-bottom: 0;
+    margin-left: 4px;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    align-content: center;
+}
+
+.last-btn {
+    margin-bottom: 0;
+    margin-top: 0;
+    margin-right: 4px;
+    margin-left: auto;
+}
+
+.top-btn-img {
+    flex-grow: 0;
+    background-color: rgba(255, 255, 255, 0);
+    width: 36px;
+    height: 36px;
+    top: 6px;
+    left: 14px;
+    right: 14px;
+    position: absolute;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.top-btn-label {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 4px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.scroll-view {
+    width: 100%;
+    height: 200px;
+    flex-direction: row;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.53);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.inv-item {
+    flex-grow: 0;
+    width: 100%;
+    height: 100%;
+    align-items: auto;
+    align-self: auto;
+    flex-shrink: 1;
+    min-height: 20px;
+    min-width: 20px;
+    padding-top: 4px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+}
