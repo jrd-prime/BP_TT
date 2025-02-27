@@ -23,8 +23,6 @@ namespace Code.Core
             // Managers
             builder.Register<ISettingsManager, SettingsManager>(Lifetime.Singleton).As<IInitializable, IDisposable>();
 
-            builder.Register<IMainUIViewModel, MainUIViewModel>(Lifetime.Singleton).As<IInitializable, IDisposable>();
-            builder.Register<IMainUIModel, MainUIModel>(Lifetime.Singleton).As<IInitializable, IDisposable>();
 
             builder.RegisterEntryPoint<AppStarter>();
         }

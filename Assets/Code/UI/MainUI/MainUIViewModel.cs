@@ -11,6 +11,11 @@ namespace Code.UI.MainUI
         public Subject<Unit> AddAmmoBtnClick { get; }
         public Subject<Unit> AddEquipmentBtnClick { get; }
         public Subject<Unit> RemoveEquipmentBtnClick { get; }
+        public ReadOnlyReactiveProperty<InventoryData> InventoryData { get; }
+    }
+
+    public struct InventoryData
+    {
     }
 
     public class MainUIViewModel : IMainUIViewModel
@@ -19,6 +24,7 @@ namespace Code.UI.MainUI
         public Subject<Unit> AddAmmoBtnClick { get; } = new();
         public Subject<Unit> AddEquipmentBtnClick { get; } = new();
         public Subject<Unit> RemoveEquipmentBtnClick { get; } = new();
+        public ReadOnlyReactiveProperty<InventoryData> InventoryData => _model.InventoryData;
 
         private IMainUIModel _model;
         private readonly CompositeDisposable _disposables = new();

@@ -1,15 +1,26 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace Code.Game.Weapon
 {
     [UsedImplicitly]
-    public sealed class WeaponManager
+    public sealed class WeaponManager : IInitializable, IDisposable
     {
         public void FireWithRandomBullet()
         {
             //тратит случайный патрон любого типа
             Debug.LogWarning("Fire with random bullet");
+        }
+
+        public void Dispose()
+        {
+            // TODO release managed resources here
+        }
+
+        public void Initialize()
+        {
         }
     }
 }

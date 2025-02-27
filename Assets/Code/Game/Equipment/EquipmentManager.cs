@@ -1,10 +1,12 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace Code.Game.Equipment
 {
     [UsedImplicitly]
-    public sealed class EquipmentManager
+    public sealed class EquipmentManager : IInitializable, IDisposable
     {
         public void RefillFullAmmoForAllTypes()
         {
@@ -22,6 +24,14 @@ namespace Code.Game.Equipment
         {
             //удаляет все предметы из случайного слота, если все слоты пустые: пишет ошибку в консоль
             Debug.LogWarning("remove all items from random slot");
+        }
+
+        public void Initialize()
+        {
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

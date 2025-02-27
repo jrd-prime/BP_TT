@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Code.Core.Data.Constants;
+using Code.Game.Inventory;
 using R3;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,9 +13,8 @@ namespace Code.UI.MainUI
     [RequireComponent(typeof(UIDocument))]
     public sealed class MainUIView : UIViewBase
     {
+        [SerializeField] private InventoryMainSettings inventoryMainSettings;
         [SerializeField] private VisualTreeAsset invItemTemplate;
-        [SerializeField] private int itemsCount = 15;
-        [SerializeField] private int invItemsInRow = 5;
 
         private IMainUIViewModel _viewModel;
 
@@ -27,13 +28,26 @@ namespace Code.UI.MainUI
         private Button _addEquipmentBtn;
         private Button _removeEquipmentBtn;
 
+        private readonly Dictionary<int, VisualElement> _slotsCache = new();
+        private bool _isInventoryViewInitialized;
+
         [Inject]
         private void Construct(IMainUIViewModel viewModel) => _viewModel = viewModel;
 
         protected override void Init()
         {
             _root = GetComponent<UIDocument>().rootVisualElement ?? throw new NullReferenceException("Root is null.");
+
             if (!invItemTemplate) throw new NullReferenceException("Inventory item template not set!");
+
+            if (_viewModel == null) throw new NullReferenceException("Main UI ViewModel is null");
+
+            _viewModel.InventoryData.Skip(1).Subscribe(OnInventoryDataChanged).AddTo(Disposables);
+        }
+
+        private void OnInventoryDataChanged(InventoryData data)
+        {
+            Debug.LogWarning("on inventory data changed");
         }
 
         protected override void InitElements()
@@ -56,8 +70,6 @@ namespace Code.UI.MainUI
 
         protected override void InitCallbacksCache()
         {
-            if (_viewModel == null) throw new NullReferenceException("Main UI ViewModel is null");
-
             CallbacksCache.Add(_shootBtn, _ => _viewModel.ShootBtnClick.OnNext(Unit.Default));
             CallbacksCache.Add(_addAmmoBtn, _ => _viewModel.AddAmmoBtnClick.OnNext(Unit.Default));
             CallbacksCache.Add(_addEquipmentBtn, _ => _viewModel.AddEquipmentBtnClick.OnNext(Unit.Default));
@@ -73,14 +85,16 @@ namespace Code.UI.MainUI
 
             if (float.IsNaN(invContainerWidth)) throw new Exception("Inventory container width is NaN!");
 
-            _invItemContainerWidth = invContainerWidth / invItemsInRow;
+            _invItemContainerWidth = invContainerWidth / inventoryMainSettings.ItemsInRow;
 
-            FillInventoryView();
+            InitializeInventoryView();
         }
 
-        private void FillInventoryView()
+        private void InitializeInventoryView()
         {
-            for (int i = 0; i < itemsCount; i++)
+            //locked slots?
+            Debug.LogWarning("initialize inventory view");
+            for (var i = 0; i < inventoryMainSettings.MaxSlots; i++)
             {
                 var template = invItemTemplate.Instantiate();
                 var itemContainer = template.Q<VisualElement>(UINameID.InvItemContainer) ??
@@ -88,8 +102,12 @@ namespace Code.UI.MainUI
 
                 itemContainer.style.width = _invItemContainerWidth;
                 itemContainer.style.height = _invItemContainerWidth;
+
                 _invContainer.Add(template);
+                _slotsCache.Add(i, itemContainer);
             }
+
+            _isInventoryViewInitialized = true;
         }
     }
 }
