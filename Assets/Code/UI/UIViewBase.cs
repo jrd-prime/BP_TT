@@ -38,13 +38,10 @@ namespace Code.UI
             if (element == null) throw new NullReferenceException($"{elementIDName} in {className} is null");
         }
 
-        public void Dispose() => Unregister();
-
-
-        private void Unregister()
+        public void Dispose()
         {
-            Debug.LogWarning("unregister view callback " + name);
             UnregisterCallbacks();
+            Disposables?.Dispose();
         }
     }
 }

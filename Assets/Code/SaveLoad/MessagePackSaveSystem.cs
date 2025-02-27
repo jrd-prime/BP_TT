@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using Code.Core.Data.Constants;
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using MessagePack;
 using MessagePack.Resolvers;
 using R3;
@@ -10,6 +11,7 @@ using Debug = UnityEngine.Debug;
 
 namespace Code.SaveLoad
 {
+    [UsedImplicitly]
     public class MessagePackSaveSystem : ISaveSystem
     {
         public ReactiveProperty<int> LastSaveTime { get; } = new(0);

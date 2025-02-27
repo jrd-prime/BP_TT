@@ -1,9 +1,11 @@
 ﻿using System;
 using Code.Core.Data.Constants;
+using Code.Core.Data.Enums;
+using Code.Core.Data.SO.Inventory;
 using MessagePack;
 using UnityEngine;
 
-namespace Code.Core.Data.SO
+namespace Code.Core.Data.SO.Items.Equipment
 {
     [MessagePackObject]
     [CreateAssetMenu(fileName = "New Ammo", menuName = SOPathConst.InventoryItemPath, order = 100)]
@@ -17,14 +19,5 @@ namespace Code.Core.Data.SO
             equipmentType = EquipmentType.Ammo;
             if (bulletType == BulletType.NotSet) throw new NullReferenceException("Bullet type is not set");
         }
-    }
-
-    public enum BulletType
-    {
-        NotSet,
-        Ordinary,
-        ArmorPiercing,
-        Incendiary,
-        Tracer
     }
 }

@@ -8,6 +8,10 @@ namespace Code.Game.Weapon
     [UsedImplicitly]
     public sealed class WeaponManager : IInitializable, IDisposable
     {
+        public void Initialize()
+        {
+        }
+
         public void FireWithRandomBullet()
         {
             //тратит случайный патрон любого типа
@@ -15,11 +19,6 @@ namespace Code.Game.Weapon
         }
 
         public void Dispose()
-        {
-            // TODO release managed resources here
-        }
-
-        public void Initialize()
         {
         }
     }

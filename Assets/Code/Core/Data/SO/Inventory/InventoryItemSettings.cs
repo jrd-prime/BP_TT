@@ -1,7 +1,8 @@
-﻿using MessagePack;
+﻿using Code.Core.Data.Enums;
+using MessagePack;
 using UnityEngine;
 
-namespace Code.Core.Data.SO
+namespace Code.Core.Data.SO.Inventory
 {
     [MessagePackObject]
     public class InventoryItemSettings : SettingsBase
@@ -9,14 +10,5 @@ namespace Code.Core.Data.SO
         [Key(0)] public string itemName = "NotSet";
         [Key(1)] public EquipmentType equipmentType = EquipmentType.NotSet;
         [Key(2)] public Sprite sprite;
-    }
-
-    public enum EquipmentType
-    {
-        NotSet,
-        Weapon,
-        HeadArmor,
-        BodyArmor,
-        Ammo
     }
 }

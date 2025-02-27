@@ -5,6 +5,7 @@ using VContainer.Unity;
 
 namespace Code.Game.Inventory
 {
+    // TODO CRUD
     [UsedImplicitly]
     public sealed class InventoryManager : IInitializable, IDisposable
     {

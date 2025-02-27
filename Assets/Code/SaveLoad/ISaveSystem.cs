@@ -9,6 +9,6 @@ namespace Code.SaveLoad
     {
         public ReactiveProperty<int> LastSaveTime { get; }
         public UniTask LoadDataAsync<T>(Action<T> setModelData, T defaultData);
-        public  UniTask SaveToFileAsync<T>(T data);
+        public UniTask SaveToFileAsync<T>(T data);
     }
 }

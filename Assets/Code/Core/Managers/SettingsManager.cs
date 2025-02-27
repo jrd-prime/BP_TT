@@ -3,9 +3,16 @@ using System.Collections.Generic;
 using Code.Core.Data.SO;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 namespace Code.Core.Managers
 {
+    public interface ISettingsManager : IInitializable, IDisposable
+    {
+        public Dictionary<Type, object> ConfigsCache { get; }
+        public T GetConfig<T>() where T : SettingsBase;
+    }
+
     public class SettingsManager : ISettingsManager
     {
         public Dictionary<Type, object> ConfigsCache { get; } = new();
@@ -25,8 +32,7 @@ namespace Code.Core.Managers
         private void CheckAndAddToCache<T>(T settings) where T : SettingsBase
         {
             if (settings == null) throw new ArgumentNullException(nameof(settings));
-            if (!ConfigsCache.TryAdd(typeof(T), settings))
-                Debug.Log($"Error. When adding to cache {typeof(T)}");
+            if (!ConfigsCache.TryAdd(typeof(T), settings)) Debug.Log($"Error. When adding to cache {typeof(T)}");
         }
 
         public T GetConfig<T>() where T : SettingsBase => ConfigsCache[typeof(T)] as T;

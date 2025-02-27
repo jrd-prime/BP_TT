@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Core.Data.Constants;
-using Code.Core.Data.SO;
-using Code.Core.Tools;
+using Code.Core.Data.SO.Inventory;
+using Code.Core.Extensions;
 using Code.Game.Inventory;
 using R3;
 using UnityEngine;
@@ -20,19 +20,17 @@ namespace Code.UI.MainUI
 
         private IMainUIViewModel _viewModel;
 
-        private VisualElement _root;
-
-        private float _invItemContainerWidth;
-
         private Button _shootBtn;
         private Button _addAmmoBtn;
         private Button _addEquipmentBtn;
         private Button _removeEquipmentBtn;
-
-        private readonly Dictionary<int, VisualElement> _slotsCache = new();
-        private bool _isInventoryViewInitialized;
         private VisualElement _inventoryContainer;
         private VisualElement _unityContentContainer;
+        private VisualElement _root;
+
+        private bool _isInventoryViewInitialized;
+        private float _invItemContainerWidth;
+        private readonly Dictionary<int, VisualElement> _slotsCache = new();
 
 
         [Inject]
@@ -51,7 +49,7 @@ namespace Code.UI.MainUI
 
         private void OnInventoryDataChanged(InventoryData data)
         {
-            Debug.LogWarning("on inventory data changed");
+            Debug.LogWarning("inventory data changed");
         }
 
         protected override void InitElements()
@@ -100,8 +98,6 @@ namespace Code.UI.MainUI
 
         private void InitializeInventoryView()
         {
-            //locked slots?
-            Debug.LogWarning("initialize inventory view");
             for (var i = 0; i < inventoryMainSettings.MaxSlots; i++)
             {
                 var template = invItemTemplate.Instantiate();

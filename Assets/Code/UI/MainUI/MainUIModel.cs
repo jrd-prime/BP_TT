@@ -3,7 +3,6 @@ using Code.Game.Equipment;
 using Code.Game.Inventory;
 using Code.Game.Weapon;
 using R3;
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -12,7 +11,6 @@ namespace Code.UI.MainUI
     public interface IMainUIModel : IInitializable, IDisposable
     {
         public ReadOnlyReactiveProperty<InventoryData> InventoryData { get; }
-        public Subject<Unit> OnShootBtnClick { get; }
         public void FireWithRandomBullet();
         public void RefillFullAmmoForAllTypes();
         public void AddFullRandomEquipment();
@@ -21,37 +19,34 @@ namespace Code.UI.MainUI
 
     public class MainUIModel : IMainUIModel
     {
-        public ReadOnlyReactiveProperty<InventoryData> InventoryData => _inventoryModel.ModelData;
-        public Subject<Unit> OnShootBtnClick { get; } = new();
+        public ReadOnlyReactiveProperty<InventoryData> InventoryData => _inventory.ModelData;
 
         private WeaponManager _weaponManager;
         private EquipmentManager _equipmentManager;
-        private InventoryModel _inventoryModel;
+        private InventoryModel _inventory;
 
         [Inject]
-        private void Construct(WeaponManager weaponManager, EquipmentManager equipmentManager,
-            InventoryModel inventoryModel)
+        private void Construct(WeaponManager weaponManager, EquipmentManager equipmentManager, InventoryModel inventory)
         {
             _weaponManager = weaponManager;
             _equipmentManager = equipmentManager;
-            _inventoryModel = inventoryModel;
-        }
-
-        public void Dispose()
-        {
-            // TODO release managed resources here
+            _inventory = inventory;
         }
 
         public void Initialize()
         {
-            Debug.LogWarning("main ui model initialized");
         }
 
         public void FireWithRandomBullet() => _weaponManager.FireWithRandomBullet();
-        public void RefillFullAmmoForAllTypes() => _equipmentManager.RefillFullAmmoForAllTypes();
-        public void AddFullRandomEquipment() => _equipmentManager.AddFullRandomEquipment();
-        public void RemoveAllItemsFromRandomSlot() => _equipmentManager.RemoveAllItemsFromRandomSlot();
-    }
 
- 
+        public void RefillFullAmmoForAllTypes() => _equipmentManager.RefillFullAmmoForAllTypes();
+
+        public void AddFullRandomEquipment() => _equipmentManager.AddFullRandomEquipment();
+
+        public void RemoveAllItemsFromRandomSlot() => _equipmentManager.RemoveAllItemsFromRandomSlot();
+
+        public void Dispose()
+        {
+        }
+    }
 }

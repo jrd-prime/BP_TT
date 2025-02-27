@@ -1,6 +1,6 @@
 ﻿using System;
 using Code.Core.Data.Constants;
-using Code.Game.Inventory;
+using Code.Core.Data.SO.Inventory;
 using UnityEngine;
 
 namespace Code.Core.Data.SO

@@ -1,6 +1,6 @@
 ﻿using R3;
 
-namespace Code.Core.Tools
+namespace Code.Core.Extensions
 {
     public static class ReactivePropertyExtensions
     {

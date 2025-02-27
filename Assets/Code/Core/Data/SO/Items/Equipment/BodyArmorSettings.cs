@@ -1,8 +1,10 @@
 ﻿using Code.Core.Data.Constants;
+using Code.Core.Data.Enums;
+using Code.Core.Data.SO.Inventory;
 using MessagePack;
 using UnityEngine;
 
-namespace Code.Core.Data.SO
+namespace Code.Core.Data.SO.Items.Equipment
 {
     [MessagePackObject]
     [CreateAssetMenu(fileName = "New BodyArmor", menuName = SOPathConst.InventoryItemPath, order = 100)]

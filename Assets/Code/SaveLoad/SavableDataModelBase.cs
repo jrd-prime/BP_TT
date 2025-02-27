@@ -1,7 +1,7 @@
 ﻿using System;
 using Code.Core.Data.SO;
+using Code.Core.Extensions;
 using Code.Core.Managers;
-using Code.Core.Tools;
 using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;
@@ -10,6 +10,10 @@ using VContainer.Unity;
 
 namespace Code.SaveLoad
 {
+    public interface ISavableData
+    {
+    }
+
     // TODO : refact, optimize & etc
     public abstract class SavableDataModelBase<TSettings, TSavableDto> : IInitializable, IDisposable
         where TSettings : SettingsBase
@@ -25,7 +29,6 @@ namespace Code.SaveLoad
         private ISaveSystem _saveSystem;
         private const float SaveDelay = 10f;
         private DateTime _lastSaveTime;
-        private TSavableDto _defaultModelData;
 
         [Inject]
         private void Construct(ISaveSystem iSaveSystem, ISettingsManager settingsManager)
@@ -44,7 +47,7 @@ namespace Code.SaveLoad
             ModelSettings = _settingsManager.GetConfig<TSettings>();
 
             InitializeDataModel();
-            _defaultModelData = GetDefaultModelData();
+            var _defaultModelData = GetDefaultModelData();
             _saveSystem.LoadDataAsync(OnModelDataLoaded, _defaultModelData).Forget();
         }
 

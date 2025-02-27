@@ -8,6 +8,10 @@ namespace Code.Game.Equipment
     [UsedImplicitly]
     public sealed class EquipmentManager : IInitializable, IDisposable
     {
+        public void Initialize()
+        {
+        }
+
         public void RefillFullAmmoForAllTypes()
         {
             //добавляет полностью заполненный стак патронов каждого типa
@@ -24,10 +28,6 @@ namespace Code.Game.Equipment
         {
             //удаляет все предметы из случайного слота, если все слоты пустые: пишет ошибку в консоль
             Debug.LogWarning("remove all items from random slot");
-        }
-
-        public void Initialize()
-        {
         }
 
         public void Dispose()

@@ -2,13 +2,11 @@
 using Code.Core.Data.SO;
 using Code.Core.Managers;
 using Code.SaveLoad;
-using Code.UI;
-using Code.UI.MainUI;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Code.Core
+namespace Code.Core.Context
 {
     public class RootContext : LifetimeScope
     {
@@ -16,12 +14,10 @@ namespace Code.Core
 
         protected override void Configure(IContainerBuilder builder)
         {
-            Debug.LogWarning("RootContext");
             if (!mainSettings) throw new NullReferenceException("Main Settings is null");
 
             builder.RegisterComponent(mainSettings);
 
-            // Managers
             builder.Register<ISettingsManager, SettingsManager>(Lifetime.Singleton).As<IInitializable, IDisposable>();
 
             builder.Register<ISaveSystem, MessagePackSaveSystem>(Lifetime.Singleton).As<IInitializable, IDisposable>();
