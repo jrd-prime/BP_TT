@@ -62,8 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6103a5865ca96214dbd937f3627c85df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortOrder: 0
+  inventoryMainSettings: {fileID: 11400000, guid: 28b7d3d7b3ce8744bb818726eaff6ba7,
+    type: 2}
   invItemTemplate: {fileID: 9197481963319205126, guid: 7eacbc77dd6dfc04d925fb7e68a73795,
     type: 3}
-  itemsCount: 15
-  invItemsInRow: 5

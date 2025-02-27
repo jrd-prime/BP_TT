@@ -33,7 +33,7 @@ namespace Code.UI
             foreach (var (button, callback) in CallbacksCache) button.UnregisterCallback(callback);
         }
 
-        protected static void CheckOnNull(VisualElement element, string elementIDName, string className)
+        protected static void CheckVisualElementOnNull(VisualElement element, string elementIDName, string className)
         {
             if (element == null) throw new NullReferenceException($"{elementIDName} in {className} is null");
         }

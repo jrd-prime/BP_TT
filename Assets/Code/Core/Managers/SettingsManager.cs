@@ -19,7 +19,7 @@ namespace Code.Core.Managers
         {
             if (_mainSettings == null) throw new NullReferenceException("Main Settings is null");
 
-            // CheckAndAddToCache(_mainSettings.character);
+            CheckAndAddToCache(_mainSettings.InventoryMainSettings);
         }
 
         private void CheckAndAddToCache<T>(T settings) where T : SettingsBase

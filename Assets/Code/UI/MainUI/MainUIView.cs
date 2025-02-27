@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Core.Data.Constants;
+using Code.Core.Tools;
 using Code.Game.Inventory;
 using R3;
 using UnityEngine;
@@ -19,7 +20,6 @@ namespace Code.UI.MainUI
         private IMainUIViewModel _viewModel;
 
         private VisualElement _root;
-        private VisualElement _invContainer;
 
         private float _invItemContainerWidth;
 
@@ -30,6 +30,9 @@ namespace Code.UI.MainUI
 
         private readonly Dictionary<int, VisualElement> _slotsCache = new();
         private bool _isInventoryViewInitialized;
+        private VisualElement inventoryContainer;
+        private VisualElement unityContentContainer;
+
 
         [Inject]
         private void Construct(IMainUIViewModel viewModel) => _viewModel = viewModel;
@@ -52,20 +55,14 @@ namespace Code.UI.MainUI
 
         protected override void InitElements()
         {
-            _shootBtn = _root.Q<Button>(UINameID.ShootBtn);
-            _addAmmoBtn = _root.Q<Button>(UINameID.AddAmmoBtn);
-            _addEquipmentBtn = _root.Q<Button>(UINameID.AddEquipmentBtn);
-            _removeEquipmentBtn = _root.Q<Button>(UINameID.RemoveEquipmentBtn);
+            _shootBtn = _root.GetVisualElement<Button>(UINameID.ShootBtn, name);
+            _addAmmoBtn = _root.GetVisualElement<Button>(UINameID.AddAmmoBtn, name);
+            _addEquipmentBtn = _root.GetVisualElement<Button>(UINameID.AddEquipmentBtn, name);
+            _removeEquipmentBtn = _root.GetVisualElement<Button>(UINameID.RemoveEquipmentBtn, name);
 
-            CheckOnNull(_shootBtn, UINameID.ShootBtn, name);
-            CheckOnNull(_addAmmoBtn, UINameID.AddAmmoBtn, name);
-            CheckOnNull(_addEquipmentBtn, UINameID.AddEquipmentBtn, name);
-            CheckOnNull(_removeEquipmentBtn, UINameID.RemoveEquipmentBtn, name);
+            inventoryContainer = _root.GetVisualElement<VisualElement>(UINameID.InventoryContainer, name);
 
-            _invContainer = _root.Q<VisualElement>(UINameID.InventoryContainer);
-            CheckOnNull(_invContainer, UINameID.InventoryContainer, name);
-
-            _invContainer.RegisterCallback<GeometryChangedEvent>(OnInvContainerGeometryChanged);
+            inventoryContainer.RegisterCallback<GeometryChangedEvent>(OnInvContainerGeometryChanged);
         }
 
         protected override void InitCallbacksCache()
@@ -79,15 +76,27 @@ namespace Code.UI.MainUI
 
         private void OnInvContainerGeometryChanged(GeometryChangedEvent evt)
         {
-            _invContainer.UnregisterCallback<GeometryChangedEvent>(OnInvContainerGeometryChanged);
+            inventoryContainer.UnregisterCallback<GeometryChangedEvent>(OnInvContainerGeometryChanged);
 
-            var invContainerWidth = _invContainer.resolvedStyle.width;
 
-            if (float.IsNaN(invContainerWidth)) throw new Exception("Inventory container width is NaN!");
+            var inventoryContainerWidth = inventoryContainer.resolvedStyle.width;
 
-            _invItemContainerWidth = invContainerWidth / inventoryMainSettings.ItemsInRow;
+            if (float.IsNaN(inventoryContainerWidth)) throw new Exception("Inventory container width is NaN!");
+
+            ConfigureScrollView(inventoryContainerWidth);
+            _invItemContainerWidth = inventoryContainerWidth / inventoryMainSettings.ItemsInRow;
 
             InitializeInventoryView();
+        }
+
+        private void ConfigureScrollView(float inventoryContainerWidth)
+        {
+            var scrollView = _root.GetVisualElement<ScrollView>(UINameID.InventoryScrollView, name);
+            scrollView.style.width = inventoryContainerWidth;
+
+            unityContentContainer = _root.GetVisualElement<VisualElement>(UINameID.UnityContentContainer, name);
+            unityContentContainer.style.flexDirection = FlexDirection.Row;
+            unityContentContainer.style.flexWrap = Wrap.Wrap;
         }
 
         private void InitializeInventoryView()
@@ -97,13 +106,15 @@ namespace Code.UI.MainUI
             for (var i = 0; i < inventoryMainSettings.MaxSlots; i++)
             {
                 var template = invItemTemplate.Instantiate();
-                var itemContainer = template.Q<VisualElement>(UINameID.InvItemContainer) ??
-                                    throw new NullReferenceException("Inventory item container not found in template!");
+                var itemContainer = template.GetVisualElement<VisualElement>(UINameID.InvItemContainer, name);
 
                 itemContainer.style.width = _invItemContainerWidth;
                 itemContainer.style.height = _invItemContainerWidth;
 
-                _invContainer.Add(template);
+                var slotId = itemContainer.GetVisualElement<Label>(UINameID.InventorySlotIdLabel, name);
+                slotId.text = (i + 1).ToString();
+
+                unityContentContainer.Add(template);
                 _slotsCache.Add(i, itemContainer);
             }
 
