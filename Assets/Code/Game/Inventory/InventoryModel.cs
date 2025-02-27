@@ -1,22 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using Code.Core.Data.SO;
 using Code.Core.Managers;
-using Code.UI.MainUI;
+using Code.SaveLoad;
 using JetBrains.Annotations;
-using R3;
+using MessagePack;
 using UnityEngine;
 using VContainer;
-using VContainer.Unity;
+using Random = UnityEngine.Random;
 
 namespace Code.Game.Inventory
 {
-    [UsedImplicitly]
-    public sealed class InventoryModel : IInitializable
+    public enum SlotState
     {
-        public ReactiveProperty<InventoryData> InventoryData { get; } = new();
+        Empty,
+        Occupied,
+        Locked
+    }
 
-        private readonly Dictionary<int, InventoryItem> cache = new();
+    [MessagePackObject]
+    public sealed class InventoryData : ISavableData
+    {
+        [Key(0)] public Dictionary<int, InventoryItem> Items { get; private set; }
+        [Key(1)] public Dictionary<int, SlotState> Slots { get; private set; }
 
+        public InventoryData(Dictionary<int, InventoryItem> items, Dictionary<int, SlotState> slots)
+        {
+            Items = items;
+            Slots = slots;
+        }
+    }
+
+    [UsedImplicitly]
+    public sealed class InventoryModel : SavableDataModelBase<InventoryMainSettings, InventoryData>
+    {
         private ISettingsManager _settingsManager;
         private InventoryMainSettings _inventorySettings;
 
@@ -26,21 +43,43 @@ namespace Code.Game.Inventory
             _settingsManager = settingsManager;
         }
 
-        public void Initialize()
+        protected override void InitializeDataModel()
         {
             Debug.LogWarning("inv model initialized");
             if (_settingsManager == null) throw new NullReferenceException("Settings manager is null");
 
             _inventorySettings = _settingsManager.GetConfig<InventoryMainSettings>();
+        }
 
-            InventoryData.Value = new InventoryData();
+        protected override InventoryData GetDefaultModelData()
+        {
+            var items = new Dictionary<int, InventoryItem>();
+            var slots = new Dictionary<int, SlotState>();
+
+            for (var i = 0; i < _inventorySettings.MaxSlots; i++)
+            {
+                if (i < _inventorySettings.DefaultAvailableSlots)
+                {
+                    // stopped here
+                    items.Add(i, new InventoryItem() { itemSettings = null, count = Random.Range(0, 99) });
+                    slots.Add(i, SlotState.Occupied);
+                }
+            }
+
+            return new InventoryData(new Dictionary<int, InventoryItem>(), new Dictionary<int, SlotState>());
+        }
+
+        protected override string GetDebugLine()
+        {
+            return "inventory debug line";
         }
     }
 
     [Serializable]
+    [MessagePackObject]
     public struct InventoryItem
     {
-        public InventoryItemSettings itemSettings;
-        public int count;
+        [Key(0)] public InventoryItemSettings itemSettings;
+        [Key(1)] public int count;
     }
 }

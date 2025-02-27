@@ -1,6 +1,7 @@
 ﻿using System;
 using Code.Core.Data.SO;
 using Code.Core.Managers;
+using Code.SaveLoad;
 using Code.UI;
 using Code.UI.MainUI;
 using UnityEngine;
@@ -23,6 +24,7 @@ namespace Code.Core
             // Managers
             builder.Register<ISettingsManager, SettingsManager>(Lifetime.Singleton).As<IInitializable, IDisposable>();
 
+            builder.Register<ISaveSystem, MessagePackSaveSystem>(Lifetime.Singleton).As<IInitializable, IDisposable>();
 
             builder.RegisterEntryPoint<AppStarter>();
         }

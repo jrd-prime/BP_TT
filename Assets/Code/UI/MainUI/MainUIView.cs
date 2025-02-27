@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Core.Data.Constants;
+using Code.Core.Data.SO;
 using Code.Core.Tools;
 using Code.Game.Inventory;
 using R3;
@@ -30,8 +31,8 @@ namespace Code.UI.MainUI
 
         private readonly Dictionary<int, VisualElement> _slotsCache = new();
         private bool _isInventoryViewInitialized;
-        private VisualElement inventoryContainer;
-        private VisualElement unityContentContainer;
+        private VisualElement _inventoryContainer;
+        private VisualElement _unityContentContainer;
 
 
         [Inject]
@@ -60,9 +61,9 @@ namespace Code.UI.MainUI
             _addEquipmentBtn = _root.GetVisualElement<Button>(UINameID.AddEquipmentBtn, name);
             _removeEquipmentBtn = _root.GetVisualElement<Button>(UINameID.RemoveEquipmentBtn, name);
 
-            inventoryContainer = _root.GetVisualElement<VisualElement>(UINameID.InventoryContainer, name);
+            _inventoryContainer = _root.GetVisualElement<VisualElement>(UINameID.InventoryContainer, name);
 
-            inventoryContainer.RegisterCallback<GeometryChangedEvent>(OnInvContainerGeometryChanged);
+            _inventoryContainer.RegisterCallback<GeometryChangedEvent>(OnInvContainerGeometryChanged);
         }
 
         protected override void InitCallbacksCache()
@@ -73,13 +74,11 @@ namespace Code.UI.MainUI
             CallbacksCache.Add(_removeEquipmentBtn, _ => _viewModel.RemoveEquipmentBtnClick.OnNext(Unit.Default));
         }
 
-
         private void OnInvContainerGeometryChanged(GeometryChangedEvent evt)
         {
-            inventoryContainer.UnregisterCallback<GeometryChangedEvent>(OnInvContainerGeometryChanged);
+            _inventoryContainer.UnregisterCallback<GeometryChangedEvent>(OnInvContainerGeometryChanged);
 
-
-            var inventoryContainerWidth = inventoryContainer.resolvedStyle.width;
+            var inventoryContainerWidth = _inventoryContainer.resolvedStyle.width;
 
             if (float.IsNaN(inventoryContainerWidth)) throw new Exception("Inventory container width is NaN!");
 
@@ -94,9 +93,9 @@ namespace Code.UI.MainUI
             var scrollView = _root.GetVisualElement<ScrollView>(UINameID.InventoryScrollView, name);
             scrollView.style.width = inventoryContainerWidth;
 
-            unityContentContainer = _root.GetVisualElement<VisualElement>(UINameID.UnityContentContainer, name);
-            unityContentContainer.style.flexDirection = FlexDirection.Row;
-            unityContentContainer.style.flexWrap = Wrap.Wrap;
+            _unityContentContainer = _root.GetVisualElement<VisualElement>(UINameID.UnityContentContainer, name);
+            _unityContentContainer.style.flexDirection = FlexDirection.Row;
+            _unityContentContainer.style.flexWrap = Wrap.Wrap;
         }
 
         private void InitializeInventoryView()
@@ -114,7 +113,7 @@ namespace Code.UI.MainUI
                 var slotId = itemContainer.GetVisualElement<Label>(UINameID.InventorySlotIdLabel, name);
                 slotId.text = (i + 1).ToString();
 
-                unityContentContainer.Add(template);
+                _unityContentContainer.Add(template);
                 _slotsCache.Add(i, itemContainer);
             }
 

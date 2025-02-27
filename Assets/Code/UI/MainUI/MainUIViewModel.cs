@@ -1,4 +1,5 @@
 ﻿using System;
+using Code.Game.Inventory;
 using R3;
 using VContainer;
 using VContainer.Unity;
@@ -14,9 +15,6 @@ namespace Code.UI.MainUI
         public ReadOnlyReactiveProperty<InventoryData> InventoryData { get; }
     }
 
-    public struct InventoryData
-    {
-    }
 
     public class MainUIViewModel : IMainUIViewModel
     {

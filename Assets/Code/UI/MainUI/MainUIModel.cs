@@ -21,7 +21,7 @@ namespace Code.UI.MainUI
 
     public class MainUIModel : IMainUIModel
     {
-        public ReadOnlyReactiveProperty<InventoryData> InventoryData => _inventoryModel.InventoryData;
+        public ReadOnlyReactiveProperty<InventoryData> InventoryData => _inventoryModel.ModelData;
         public Subject<Unit> OnShootBtnClick { get; } = new();
 
         private WeaponManager _weaponManager;
@@ -53,11 +53,5 @@ namespace Code.UI.MainUI
         public void RemoveAllItemsFromRandomSlot() => _equipmentManager.RemoveAllItemsFromRandomSlot();
     }
 
-    public enum BulletType
-    {
-        Ordinary,
-        ArmorPiercing,
-        Incendiary,
-        Tracer
-    }
+ 
 }

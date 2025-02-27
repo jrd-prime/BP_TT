@@ -1,8 +1,7 @@
 ﻿using Code.Core.Data.Constants;
-using Code.Core.Data.SO;
 using UnityEngine;
 
-namespace Code.Game.Inventory
+namespace Code.Core.Data.SO
 {
     [CreateAssetMenu(fileName = "InventoryMainSettings", menuName = SOPathConst.ConfigPath + "Inventory Settings",
         order = 100)]

@@ -1,12 +1,22 @@
-﻿using Code.Core.Data.Constants;
-using Code.Core.Data.SO;
+﻿using MessagePack;
 using UnityEngine;
 
-namespace Code.Game.Inventory
+namespace Code.Core.Data.SO
 {
-    [CreateAssetMenu(fileName = "New Inventory Item", menuName = SOPathConst.InventoryItemPath, order = 100)]
+    [MessagePackObject]
     public class InventoryItemSettings : SettingsBase
     {
-        public string name = "NotSet";
+        [Key(0)] public string itemName = "NotSet";
+        [Key(1)] public EquipmentType equipmentType = EquipmentType.NotSet;
+        [Key(2)] public Sprite sprite;
+    }
+
+    public enum EquipmentType
+    {
+        NotSet,
+        Weapon,
+        HeadArmor,
+        BodyArmor,
+        Ammo
     }
 }
